@@ -1,0 +1,2 @@
+[console_scripts]
+openclaw-monitor = openclaw_monitor.runner:main_loop

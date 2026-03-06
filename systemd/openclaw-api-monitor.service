@@ -1,0 +1,15 @@
+[Unit]
+Description=OpenClaw API Monitor - detect LLM API failures and watch until recovery
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/path/to/openclaw-api-monitor
+Environment=OPENCLAW_MONITOR_CONFIG=/path/to/openclaw-api-monitor/config.yaml
+ExecStart=/usr/bin/python3 -m openclaw_monitor
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=default.target

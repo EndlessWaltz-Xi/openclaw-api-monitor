@@ -1,0 +1,58 @@
+# OpenClaw API Monitor - 示例配置
+# 复制为 config.yaml 并按需修改
+
+# OpenClaw 网关地址（Linux 本机部署一般为 127.0.0.1:18789）
+base_url: "http://127.0.0.1:18789"
+
+# 可选：网关鉴权 token（若 gateway.auth.mode 为 token，请填写）
+# auth_token: "your-gateway-token"
+
+# 健康检查方式: "chat" 发送最小对话请求, "ping" 仅请求根路径
+# 推荐 "chat" 以真实触发大模型 API 调用
+check_mode: "chat"
+
+# chat 模式下的 Completions 路径（通常无需修改）
+chat_endpoint: "/v1/chat/completions"
+
+# chat 模式下使用的 model（OpenClaw 常用 openclaw:main）
+chat_model: "openclaw:main"
+
+# 检测间隔（秒）- 正常时每隔多久检查一次
+check_interval: 60
+
+# 失败后恢复监测间隔（秒）- 发现失败后每隔多久重试一次
+recovery_interval: 30
+
+# 单次请求超时（秒）
+timeout: 30
+
+# 视为 API 失败的 HTTP 状态码
+failure_status_codes: [429, 500, 502, 503, 504]
+
+# 响应体中包含以下关键词之一则视为 API 限制/配额类失败
+failure_keywords:
+  - "rate limit"
+  - "rate_limit"
+  - "quota"
+  - "token"
+  - "limit exceeded"
+  - "too many requests"
+  - "insufficient_quota"
+  - "context_length"
+  - "max_tokens"
+  - "overloaded"
+  - "capacity"
+  - "服务繁忙"
+  - "请求过于频繁"
+  - "配额"
+  - "限流"
+
+# 可选：失败时执行命令（如发通知、重启网关等）
+# on_failure_command: "echo API failed | logger -t openclaw-monitor"
+# on_recovery_command: "echo API recovered | logger -t openclaw-monitor"
+
+# 日志级别: DEBUG, INFO, WARNING, ERROR
+log_level: "INFO"
+
+# 日志输出: "stdout" 或文件路径
+log_output: "stdout"
